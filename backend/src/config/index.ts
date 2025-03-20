@@ -15,7 +15,6 @@ export const config = {
   },
   services: {
     auth: process.env.AUTH_SERVICE_URL!,
-    user: process.env.USER_SERVICE_URL!,
-    
+    users: process.env.USER_SERVICE_URL!,
   }
 };
