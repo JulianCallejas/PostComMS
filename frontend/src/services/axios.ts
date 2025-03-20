@@ -24,12 +24,12 @@ export class ApiClient {
     return response.data
   }
 
-  static async post<T>(endpoint: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+  static async post<T>(endpoint: string, data?: unknown, config?: AxiosRequestConfig): Promise<T> {
     const response: AxiosResponse<T> = await axiosInstance.post(endpoint, data, config)
     return response.data
   }
 
-  static async put<T>(endpoint: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+  static async put<T>(endpoint: string, data?: unknown, config?: AxiosRequestConfig): Promise<T> {
     const response: AxiosResponse<T> = await axiosInstance.put(endpoint, data, config)
     return response.data
   }

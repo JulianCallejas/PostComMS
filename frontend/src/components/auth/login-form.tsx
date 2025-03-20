@@ -9,9 +9,15 @@ import { Label } from "../ui/label"
 import { Input } from "../ui/input"
 import { Button } from "../ui/button"
 import Link from "next/link"
+import { useAuthStore } from "@/stores/auth-store"
+import { toast } from "sonner"
+import { useRouter } from "next/navigation"
 
 export default function LoginForm() {
     const [isLoading, setIsLoading] = useState(false)
+    const { login } = useAuthStore()
+    
+    const router = useRouter()
     
     const {
       register,
@@ -22,7 +28,16 @@ export default function LoginForm() {
     })
   
     const onSubmit = async (data: LoginFormValues) => {
-      
+        setIsLoading(true)
+        try {
+          await login(data.email, data.password)
+          toast.success("Bienvenid@ a PostComMS")
+          router.push("/posts")
+        } catch (error) {
+            toast.error(error instanceof Error ? error.message : "Error al iniciar sesión")
+        } finally {
+          setIsLoading(false)
+        }
     }
   
     return (
