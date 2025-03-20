@@ -15,7 +15,7 @@ import { useRouter } from "next/navigation"
 
 export default function LoginForm() {
     const [isLoading, setIsLoading] = useState(false)
-    const { login } = useAuthStore()
+    const { login, isAuthenticated } = useAuthStore()
     const router = useRouter()
 
     const {
@@ -37,6 +37,10 @@ export default function LoginForm() {
         } finally {
             setIsLoading(false)
         }
+    }
+
+    if (isAuthenticated) {
+        router.replace("/posts")
     }
 
     return (

@@ -15,7 +15,7 @@ import { toast } from "sonner"
 
 export default function RegisterForm() {
     const [isLoading, setIsLoading] = useState(false)
-    const { register: registerUser } = useAuthStore()
+    const { register: registerUser, isAuthenticated } = useAuthStore()
     const router = useRouter()
 
     const {
@@ -37,6 +37,10 @@ export default function RegisterForm() {
         } finally {
             setIsLoading(false)
         }
+    }
+
+    if (isAuthenticated) {
+        router.replace("/posts")
     }
 
     return (
