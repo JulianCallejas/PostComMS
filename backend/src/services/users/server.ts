@@ -2,6 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import { config } from '../../config';
 import { createLogger } from '../../lib/createLogger';
+import { authenticateToken } from '../../middleware/auth';
+import userRoutes from './index';
 
 
 //Logger
@@ -12,6 +14,11 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+//Global middleware
+app.use(authenticateToken);
+
+app.use('/api/users', userRoutes);
 
 
 app.get('/health', (req, res) => {

@@ -5,10 +5,27 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { config } from '../../config';
 import { createLogger } from '../../lib/createLogger';
+import { authenticateToken } from '../../middleware/auth';
 
 const router = express.Router();
 const prisma = new PrismaClient();
 const logger = createLogger('authservice');
+
+const generateTokens = (userId: string) => {
+  const token = jwt.sign(
+    { userId },
+    config.jwt.secret,
+    { expiresIn: '24h' }
+  );
+
+  const refreshToken = jwt.sign(
+    { userId, type: 'refresh' },
+    config.jwt.secret,
+    { expiresIn: '7d' }
+  );
+
+  return { token, refreshToken };
+};
 
 // Register user password must have at least 6 characters and contain at least one number and one letter
 router.post(
@@ -56,11 +73,7 @@ router.post(
       });
 
       // Generate JWT
-      const token = jwt.sign(
-        { userId: user.id },
-        config.jwt.secret,
-        { expiresIn: '24h' }
-      );
+      const { token } = generateTokens(user.id);
 
       res.status(201).json({
         message: 'User created successfully',
@@ -76,13 +89,10 @@ router.post(
 );
 
 // Login user
-router.post(
-  '/login',
-  [
+router.post('/login',[
     body('email').isEmail(),
     body('password').exists()
-  ],
-  async (req: Request, res: Response) => {
+  ], async (req: Request, res: Response) => {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -107,18 +117,30 @@ router.post(
       }
 
       // Generate JWT
-      const token = jwt.sign(
-        { userId: user.id },
-        config.jwt.secret,
-        { expiresIn: '24h' }
-      );
+      const { token } = generateTokens(user.id);
 
       res.json({ email, username: user.username, token });
     } catch (error) {
       logger.error('Login error:', error);
       res.status(500).json({ message: 'Internal server error' });
     }
-  }
-);
+});
+
+router.post('/refresh', authenticateToken , async (req: Request, res: Response) => {
+  try{
+    const { userId } = req.user;
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+    });
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+    const { refreshToken } = generateTokens(user.id);
+    res.json({ token: refreshToken });
+  } catch (error) {
+      logger.error('Refresh token error:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+});
 
 export default router;
