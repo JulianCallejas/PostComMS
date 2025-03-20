@@ -64,6 +64,8 @@ router.post(
 
       res.status(201).json({
         message: 'User created successfully',
+        email: user.email,
+        username: user.username,
         token
       });
     } catch (error) {
@@ -111,7 +113,7 @@ router.post(
         { expiresIn: '24h' }
       );
 
-      res.json({ token });
+      res.json({ email, username: user.username, token });
     } catch (error) {
       logger.error('Login error:', error);
       res.status(500).json({ message: 'Internal server error' });
