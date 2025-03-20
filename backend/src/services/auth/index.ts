@@ -4,7 +4,7 @@ import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { config } from '../../config';
-import { createLogger } from '@/lib/createLogger';
+import { createLogger } from '../../lib/createLogger';
 
 const router = express.Router();
 const prisma = new PrismaClient();

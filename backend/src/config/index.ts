@@ -13,6 +13,7 @@ export const config = {
     url: process.env.DATABASE_URL!,
   },
   services: {
+    auth: process.env.AUTH_SERVICE_URL!,
     
   }
 };

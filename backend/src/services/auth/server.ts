@@ -2,6 +2,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import { createLogger } from '../../lib/createLogger';
 import { config } from '../../config';
+import authRoutes from './index';
 
 //Logger
 const logger = createLogger('authservice');
@@ -16,6 +17,7 @@ app.use(cors({
 
 app.use(express.json());
 
+app.use('/api/auth', authRoutes);
 
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', service: 'auth' });
