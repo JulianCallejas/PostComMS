@@ -49,6 +49,73 @@ router.post(
   }
 );
 
+// Update post
+router.put(
+    '/:postId',
+    [body('content').notEmpty()],
+    async (req: Request, res: Response) => {
+      try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+          return res.status(400).json({ errors: errors.array() });
+        }
+  
+        const { postId } = req.params;
+        const { content } = req.body;
+  
+        // Check if post exists and belongs to user
+        const existingPost = await prisma.post.findFirst({
+          where: {
+            id: postId,
+            authorId: req.user.userId
+          }
+        });
+  
+        if (!existingPost) {
+          return res.status(404).json({ message: 'Post not found' });
+        }
+  
+        // Update post
+        const updatedPost = await prisma.post.update({
+          where: {
+            id: postId
+          },
+          data: {
+            content
+          },
+          include: {
+            author: {
+              select: {
+                id: true,
+                username: true,
+                name: true
+              }
+            },
+            likes: {
+                where: {
+                  userId: req.user.userId
+                },
+                select: {
+                  id: true
+                }
+              },
+            _count: {
+              select: { likes: true }
+            }
+          }
+        });
+        const {likes, ...postWithoutLikes} = updatedPost;
+        res.json({
+            ...postWithoutLikes,
+            isLiked: likes.length > 0,
+        });
+      } catch (error) {
+        logger.error('Post update error:', error);
+        res.status(500).json({ message: 'Internal server error' });
+      }
+    }
+  );
+
 // Get all posts
 router.get('/', async (req, res) => {
     try {
@@ -162,9 +229,7 @@ router.get('/my-posts', async (req, res) => {
         ...postWithoutLikes,
         isLiked: likes.length > 0,
       })});
-
-
-  
+ 
       res.json({
         posts: postsWithLikeStatus,
         pagination: {

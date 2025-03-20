@@ -46,6 +46,7 @@ const createServiceProxy = (serviceName: string, target: string) => {
 // Route traffic to appropriate services
 app.use( createServiceProxy('auth', config.services.auth));
 app.use( createServiceProxy('users', config.services.users));
+app.use( createServiceProxy('posts', config.services.posts));
 
 
 // Health check endpoint

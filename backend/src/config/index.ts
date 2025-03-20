@@ -16,6 +16,6 @@ export const config = {
   services: {
     auth: process.env.AUTH_SERVICE_URL!,
     users: process.env.USER_SERVICE_URL!,
-    post: process.env.POST_SERVICE_URL!,
+    posts: process.env.POST_SERVICE_URL!,
   }
 };
