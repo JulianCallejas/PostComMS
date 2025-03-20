@@ -4,8 +4,9 @@ dotenv.config();
 
 
 export const config = {
-  port: process.env.PORT || 3000,
-  authPort: process.env.AUTHPORT || 3001,
+  port: Number(process.env.PORT) || 3000,
+  authPort: Number(process.env.AUTHPORT) || 3001,
+  userPort: Number(process.env.USERPORT) || 3002,
   jwt: {
     secret: process.env.JWT_SECRET!,
   },
@@ -14,6 +15,7 @@ export const config = {
   },
   services: {
     auth: process.env.AUTH_SERVICE_URL!,
+    user: process.env.USER_SERVICE_URL!,
     
   }
 };
