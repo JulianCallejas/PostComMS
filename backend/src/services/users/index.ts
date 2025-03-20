@@ -1,9 +1,11 @@
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
+import { createLogger } from '../../lib/createLogger';
 
 
 const router = express.Router();
 const prisma = new PrismaClient();
+const logger = createLogger('usersservice');
 
 // Get user profile
 router.get('/profile', async (req, res) => {
@@ -26,7 +28,7 @@ router.get('/profile', async (req, res) => {
 
     res.json(user);
   } catch (error) {
-    console.error('Profile fetch error:', error);
+    logger.error('Profile fetch error:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 });
@@ -51,7 +53,7 @@ router.put('/profile', async (req, res) => {
 
     res.json(updatedUser);
   } catch (error) {
-    console.error('Profile update error:', error);
+    logger.error('Profile update error:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 });
