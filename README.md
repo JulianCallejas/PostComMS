@@ -90,6 +90,10 @@ docker exec -it postcomms-user-service-1 npx prisma migrate deploy
 docker exec -it postcomms-user-service-1 node prisma/seed.js
 ```
 
+Los usuarios generados son:
+- jc@example.com   ->Password: password123
+- sc@example.com   ->Password: password123
+
 7. La API de backend estará disponible en [http://localhost:3000/api](http://localhost:3000/api) y la aplicación web estará disponible en [http://localhost:3005](http://localhost:3005).
 
 ## Configuración
