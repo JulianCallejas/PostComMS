@@ -2,7 +2,11 @@ import express from 'express';
 import cors from 'cors';
 import { config } from '../../config';
 import { authenticateToken } from '../../middleware/auth';
+import { createLogger } from '../../lib/createLogger';
 import postRoutes from './index';
+
+//Logger
+const logger = createLogger('postsservice');
 
 const app = express();
 
@@ -23,5 +27,5 @@ const port = config.postPort;
 
 
 app.listen(port, () => {
-    console.log(`Post service running on port ${port}`);
+    logger.info(`Post service running on port ${port}`);
 });

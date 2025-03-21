@@ -1,4 +1,13 @@
-# PostComMS - Red Social
+<h1 align="center" > PostComMS - Red Social </h1>
+
+<p align="center">
+    <a href="/" target="_blank" rel="noreferrer">
+      <img src="https://res.cloudinary.com/dphleqb5t/image/upload/v1742581735/PostComMS/logo250_eab8n4.webp" width="200" alt="Age of Dragons Logo" />
+    </a>
+</p>
+
+
+<h2 align="center">Por Julian Callejas { jc - develop }</h2>
 
 PostComMS es una red social para publicaciones de texto donde los usuarios pueden registrarse, iniciar sesión, ver su perfil y visualizar publicaciones de otros usuarios con conteo de "likes".
 
@@ -37,7 +46,7 @@ Antes de comenzar, asegúrate de tener instalado:
 
 ## Instalación
 
-### Método 1: Instalación Local
+### Levantar con docker
 
 Sigue estos pasos para instalar y configurar el proyecto localmente:
 
@@ -81,9 +90,7 @@ docker exec -it postcomms-user-service-1 npx prisma migrate deploy
 docker exec -it postcomms-user-service-1 node prisma/seed.js
 ```
 
-7. La API de backend estará disponible en [http://localhost:3000/api](http://localhost:3000/api).
-
-8. La aplicación estará disponible en [http://localhost:3005](http://localhost:3005).
+7. La API de backend estará disponible en [http://localhost:3000/api](http://localhost:3000/api) y la aplicación web estará disponible en [http://localhost:3005](http://localhost:3005).
 
 ## Configuración
 
@@ -205,3 +212,10 @@ Si deseas contribuir a este proyecto, por favor:
 3. Haz commit de tus cambios (`git commit -m 'Añadir nueva funcionalidad'`)
 4. Haz push a la rama (`git push origin feature/nueva-funcionalidad`)
 5. Abre un Pull Request
+
+<p align="center">
+<a href="https://github.com/JulianCallejas">
+  <img src="https://res.cloudinary.com/dphleqb5t/image/upload/v1740784502/github-jc-develop/JC-LOGO-Horizontal-170-50-thin-github_uu3b5n.svg" width="170" alt="{ jc - develop }"  /> 
+</a>
+</p>
+

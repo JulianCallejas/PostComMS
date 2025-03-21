@@ -8,7 +8,7 @@ import { redirect } from "next/navigation"
 
 export default function Navbar() {
 
-    const { logout } = useAuthStore()
+    const { logout, user } = useAuthStore()
 
     const handleLogout = () => {
         logout();
@@ -25,9 +25,13 @@ export default function Navbar() {
                     <Link href="/posts">
                         <MessageSquare className="h-5 w-5 md:h-7 md:w-7" />
                     </Link>
-                    <Link href="/profile">
-                        <UserCircle className="h-5 w-5 md:h-7 md:w-7" />
-                    </Link>
+                    <div className="relative flex justify-center ">
+                        <Link href="/profile">
+                            <UserCircle className="h-5 w-5 md:h-7 md:w-7" />
+                        </Link>
+                        <span className="absolute -bottom-6 text-xs max-w-20 overflow-hidden overflow-ellipsis" >{ user?.username }</span>
+
+                    </div>
                     <button type="button" onClick={handleLogout} className="hover:cursor-pointer">
                         <LogOut className="h-5 w-5 md:h-7 md:w-7" />
                     </button>
