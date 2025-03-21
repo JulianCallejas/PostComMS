@@ -1,7 +1,7 @@
 <h1 align="center" > PostComMS - Red Social </h1>
 
 <p align="center">
-    <a href="/" target="_blank" rel="noreferrer">
+    <a href="https://github.com/JulianCallejas/PostComMS" target="_blank" rel="noreferrer">
       <img src="https://res.cloudinary.com/dphleqb5t/image/upload/v1742581735/PostComMS/logo250_eab8n4.webp" width="200" alt="Age of Dragons Logo" />
     </a>
 </p>
@@ -48,12 +48,12 @@ Antes de comenzar, asegúrate de tener instalado:
 
 ### Levantar con docker
 
-Sigue estos pasos para instalar y configurar el proyecto localmente:
+Sigue estos pasos para instalar y configurar el proyecto localmente, recuerda tener docker y docker-compose instalados y en ejecución:
 
 1. Clona el repositorio:
 
 ```bash
-git clone <url-del-repositorio>
+git clone https://github.com/JulianCallejas/PostComMS.git
 
 ```
 
