@@ -8,9 +8,9 @@ const prisma = new PrismaClient();
 
 beforeAll(async () => {
   // Clean up database before tests
-  await prisma.like.deleteMany();
-  await prisma.post.deleteMany();
   await prisma.user.deleteMany();
+  await prisma.post.deleteMany();
+  await prisma.like.deleteMany();
 });
 
 afterAll(async () => {

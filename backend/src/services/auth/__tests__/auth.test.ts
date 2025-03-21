@@ -15,6 +15,11 @@ describe('Auth Service', () => {
     await prisma.user.deleteMany();
   });
 
+  afterAll(async () => {
+    await prisma.user.deleteMany();
+    await prisma.post.deleteMany();
+  });
+
   describe('POST /api/auth/register', () => {
     it('should register a new user successfully', async () => {
       const response = await request(app)

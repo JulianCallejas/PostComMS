@@ -1,4 +1,4 @@
-import express, {Request, Response} from 'express';
+import express, { Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
 import { PrismaClient } from '@prisma/client';
 import { authenticateToken } from '../../middleware/auth';
@@ -43,7 +43,7 @@ router.post(
 
       res.status(201).json(post);
     } catch (error) {
-        logger.error('Post creation error:', error);
+      logger.error('Post creation error:', error);
       res.status(500).json({ message: 'Internal server error' });
     }
   }
@@ -51,199 +51,199 @@ router.post(
 
 // Update post
 router.put(
-    '/:postId',
-    [body('content').notEmpty()],
-    async (req: Request, res: Response) => {
-      try {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-          return res.status(400).json({ errors: errors.array() });
-        }
-  
-        const { postId } = req.params;
-        const { content } = req.body;
-  
-        // Check if post exists and belongs to user
-        const existingPost = await prisma.post.findFirst({
-          where: {
-            id: postId,
-            authorId: req.user.userId
-          }
-        });
-  
-        if (!existingPost) {
-          return res.status(404).json({ message: 'Post not found' });
-        }
-  
-        // Update post
-        const updatedPost = await prisma.post.update({
-          where: {
-            id: postId
-          },
-          data: {
-            content
-          },
-          include: {
-            author: {
-              select: {
-                id: true,
-                username: true,
-                name: true
-              }
-            },
-            likes: {
-                where: {
-                  userId: req.user.userId
-                },
-                select: {
-                  id: true
-                }
-              },
-            _count: {
-              select: { likes: true }
-            }
-          }
-        });
-        const {likes, ...postWithoutLikes} = updatedPost;
-        res.json({
-            ...postWithoutLikes,
-            isLiked: likes.length > 0,
-        });
-      } catch (error) {
-        logger.error('Post update error:', error);
-        res.status(500).json({ message: 'Internal server error' });
+  '/:postId',
+  [body('content').notEmpty()],
+  async (req: Request, res: Response) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
       }
+
+      const { postId } = req.params;
+      const { content } = req.body;
+
+      // Check if post exists and belongs to user
+      const existingPost = await prisma.post.findFirst({
+        where: {
+          id: postId,
+          authorId: req.user.userId
+        }
+      });
+
+      if (!existingPost) {
+        return res.status(404).json({ message: 'Post not found' });
+      }
+
+      // Update post
+      const updatedPost = await prisma.post.update({
+        where: {
+          id: postId
+        },
+        data: {
+          content
+        },
+        include: {
+          author: {
+            select: {
+              id: true,
+              username: true,
+              name: true
+            }
+          },
+          likes: {
+            where: {
+              userId: req.user.userId
+            },
+            select: {
+              id: true
+            }
+          },
+          _count: {
+            select: { likes: true }
+          }
+        }
+      });
+      const { likes, ...postWithoutLikes } = updatedPost;
+      res.json({
+        ...postWithoutLikes,
+        isLiked: likes.length > 0,
+      });
+    } catch (error) {
+      logger.error('Post update error:', error);
+      res.status(500).json({ message: 'Internal server error' });
     }
-  );
+  }
+);
 
 // Get all posts
 router.get('/', async (req, res) => {
-    try {
-      const page = Number(req.query.page) || 1;
-      const skip = (page - 1) * POSTS_PER_PAGE;
-  
-      const [posts, totalPosts] = await Promise.all([
-        prisma.post.findMany({
-          take: POSTS_PER_PAGE,
-          skip,
-          include: {
-            author: {
-              select: {
-                id: true,
-                username: true,
-                name: true
-              }
-            },
-            likes: {
-              where: {
-                userId: req.user.userId
-              },
-              select: {
-                id: true
-              }
-            },
-            _count: {
-              select: { likes: true }
+  try {
+    const page = Number(req.query.page) || 1;
+    const skip = (page - 1) * POSTS_PER_PAGE;
+
+    const [posts, totalPosts] = await Promise.all([
+      prisma.post.findMany({
+        take: POSTS_PER_PAGE,
+        skip,
+        include: {
+          author: {
+            select: {
+              id: true,
+              username: true,
+              name: true
             }
           },
-          orderBy: {
-            createdAt: 'desc'
+          likes: {
+            where: {
+              userId: req.user.userId
+            },
+            select: {
+              id: true
+            }
+          },
+          _count: {
+            select: { likes: true }
           }
-        }),
-        prisma.post.count()
-      ]);
-  
-      // Transform the posts to include isLiked flag
-      const postsWithLikeStatus = posts.map(post => 
-        {
-            const {likes, ...postWithoutLikes} = post;
-        return ({
+        },
+        orderBy: {
+          createdAt: 'desc'
+        }
+      }),
+      prisma.post.count()
+    ]);
+
+    // Transform the posts to include isLiked flag
+    const postsWithLikeStatus = posts.map(post => {
+      const { likes, ...postWithoutLikes } = post;
+      return ({
         ...postWithoutLikes,
         isLiked: likes.length > 0,
-      })});
-  
-      res.json({
-        posts: postsWithLikeStatus,
-        pagination: {
-          currentPage: page,
-          totalPages: Math.ceil(totalPosts / POSTS_PER_PAGE),
-          totalPosts,
-          postsPerPage: POSTS_PER_PAGE
-        }
-      });
-    } catch (error) {
-      logger.error('Posts fetch error:', error);
-      res.status(500).json({ message: 'Internal server error' });
-    }
-  });
+      })
+    });
 
-  // Get my posts with pagination
+    res.json({
+      posts: postsWithLikeStatus,
+      pagination: {
+        currentPage: page,
+        totalPages: Math.ceil(totalPosts / POSTS_PER_PAGE),
+        totalPosts,
+        postsPerPage: POSTS_PER_PAGE
+      }
+    });
+  } catch (error) {
+    logger.error('Posts fetch error:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+// Get my posts with pagination
 router.get('/my-posts', async (req, res) => {
-    try {
-      const page = Number(req.query.page) || 1;
-      const skip = (page - 1) * POSTS_PER_PAGE;
-  
-      const [posts, totalPosts] = await Promise.all([
-        prisma.post.findMany({
-          where: {
-            authorId: req.user.userId
-          },
-          take: POSTS_PER_PAGE,
-          skip,
-          include: {
-            author: {
-              select: {
-                id: true,
-                username: true,
-                name: true
-              }
-            },
-            likes: {
-                where: {
-                  userId: req.user.userId
-                },
-                select: {
-                  id: true
-                }
-              },
-            _count: {
-              select: { likes: true }
+  try {
+    const page = Number(req.query.page) || 1;
+    const skip = (page - 1) * POSTS_PER_PAGE;
+
+    const [posts, totalPosts] = await Promise.all([
+      prisma.post.findMany({
+        where: {
+          authorId: req.user.userId
+        },
+        take: POSTS_PER_PAGE,
+        skip,
+        include: {
+          author: {
+            select: {
+              id: true,
+              username: true,
+              name: true
             }
           },
-          orderBy: {
-            createdAt: 'desc'
+          likes: {
+            where: {
+              userId: req.user.userId
+            },
+            select: {
+              id: true
+            }
+          },
+          _count: {
+            select: { likes: true }
           }
-        }),
-        prisma.post.count({
-          where: {
-            authorId: req.user.userId
-          }
-        })
-      ]);
+        },
+        orderBy: {
+          createdAt: 'desc'
+        }
+      }),
+      prisma.post.count({
+        where: {
+          authorId: req.user.userId
+        }
+      })
+    ]);
 
-      // Transform the posts to include isLiked flag
-      const postsWithLikeStatus = posts.map(post => 
-        {
-            const {likes, ...postWithoutLikes} = post;
-        return ({
+    // Transform the posts to include isLiked flag
+    const postsWithLikeStatus = posts.map(post => {
+      const { likes, ...postWithoutLikes } = post;
+      return ({
         ...postWithoutLikes,
         isLiked: likes.length > 0,
-      })});
- 
-      res.json({
-        posts: postsWithLikeStatus,
-        pagination: {
-          currentPage: page,
-          totalPages: Math.ceil(totalPosts / POSTS_PER_PAGE),
-          totalPosts,
-          postsPerPage: POSTS_PER_PAGE
-        }
-      });
-    } catch (error) {
-      logger.error('My posts fetch error:', error);
-      res.status(500).json({ message: 'Internal server error' });
-    }
-  });
+      })
+    });
+
+    res.json({
+      posts: postsWithLikeStatus,
+      pagination: {
+        currentPage: page,
+        totalPages: Math.ceil(totalPosts / POSTS_PER_PAGE),
+        totalPosts,
+        postsPerPage: POSTS_PER_PAGE
+      }
+    });
+  } catch (error) {
+    logger.error('My posts fetch error:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
 
 // Like/Unlike post
 router.post('/:postId/like', authenticateToken, async (req, res) => {

@@ -19,6 +19,9 @@
     "seed": "ts-node prisma/seed.ts",
     "test": "jest",
     "test:auth": "jest src/services/auth/__tests__",
+    "test:users": "jest src/services/users/__tests__",
+    "test:posts": "jest src/services/posts/__tests__",
+    "test:coverage": "jest --coverage",
     "docker:build": "docker-compose build",
     "docker:up": "docker-compose up -d",
     "docker:down": "docker-compose down"
