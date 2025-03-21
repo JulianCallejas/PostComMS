@@ -77,7 +77,7 @@ yarn install
 4. Levanta los servicios de backend y frontend:
 ```bash
 cd ..
-docker-compose up -d
+docker-compose -f docker-compose-project.yml up -d
 ```
 
 5. En el contenedor de backend users ejecuta la migración de la base de datos:
