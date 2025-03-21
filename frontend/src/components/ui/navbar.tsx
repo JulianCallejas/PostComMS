@@ -29,7 +29,7 @@ export default function Navbar() {
                         <Link href="/profile">
                             <UserCircle className="h-5 w-5 md:h-7 md:w-7" />
                         </Link>
-                        <span className="absolute -bottom-6 text-xs max-w-20 overflow-hidden overflow-ellipsis" >{ user?.username }</span>
+                        <span className="absolute -bottom-6 text-xs max-w-20 max-h-4 overflow-hidden overflow-ellipsis" >{ user?.username }</span>
 
                     </div>
                     <button type="button" onClick={handleLogout} className="hover:cursor-pointer">
