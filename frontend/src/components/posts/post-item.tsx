@@ -43,7 +43,7 @@ export default function PostItem({ post }: PostItemProps) {
       </CardContent>
       <CardFooter className="pt-0">
         <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary" onClick={handleLike}>
-          <Heart className="h-4 w-4 mr-1" />
+          <Heart className={`h-4 w-4 mr-1 transition-all ${post.isLiked && "text-red-600 fill-red-800"}`}  />
           {post._count.likes}
         </Button>
       </CardFooter>
