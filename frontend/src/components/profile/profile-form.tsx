@@ -2,7 +2,7 @@
 
 import { ProfileFormValues, profileSchema } from "@/schemas/profile-schema"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card"
 import { Label } from "@radix-ui/react-label"
@@ -11,12 +11,15 @@ import { useAuthStore } from "@/stores/auth-store"
 import { Textarea } from "../ui/textarea"
 import { Button } from "../ui/button"
 import { Loader2 } from "lucide-react"
+import { useUserStore } from "@/stores/user-store"
+import { toast } from "sonner"
 
 
 export default function ProfileForm() {
 
     const [isUpdating, setIsUpdating] = useState(false)
     const { user } = useAuthStore()
+    const { profile, loading, updateProfile, getProfile } = useUserStore()
 
     const {
         register,
@@ -26,18 +29,50 @@ export default function ProfileForm() {
     } = useForm<ProfileFormValues>({
         resolver: zodResolver(profileSchema),
         defaultValues: {
-            name: "",
-            bio: "",
+            name: profile?.name || "",
+            bio: profile?.bio || "",
         },
     })
+
+    useEffect(() => {
+        getProfile()
+    }, [getProfile])
+
+
+    useEffect(() => {
+        if (profile) {
+            reset({
+                name: profile.name || "",
+                bio: profile.bio || "",
+            })
+        }
+    }, [profile, reset])
 
 
     const onSubmit = async (data: ProfileFormValues) => {
 
+        setIsUpdating(true)
+        try {
+            await updateProfile(data)
+            toast.success("Tu perfil ha sido actualizado correctamente")
+        } catch (error) {
+            toast.error(error instanceof Error ? error.message : "Error al actualizar el perfil")
+        } finally {
+            setIsUpdating(false)
+        }
+
+    }
+
+    if (loading && !profile) {
+        return (
+            <div className="flex justify-center items-center h-[calc(100vh-100px)]">
+                <Loader2 className="h-8 w-8 animate-spin" />
+            </div>
+        )
     }
 
     return (
-        <Card>
+        <Card className="animate-fade" >
             <CardHeader>
                 <CardTitle>{user?.username || ""}</CardTitle>
                 <CardDescription>{user?.email || ""}</CardDescription>

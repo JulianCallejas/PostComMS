@@ -26,7 +26,7 @@ export default function PostItem({ post }: PostItemProps) {
   }
 
   return (
-    <Card className="mb-4">
+    <Card className="mb-4 animate-fade">
       <CardHeader className="pb-2">
         <div className="flex justify-between items-start">
           <div>
