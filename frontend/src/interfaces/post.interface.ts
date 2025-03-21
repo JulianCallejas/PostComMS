@@ -14,6 +14,13 @@ export interface Author {
     _count: {
       likes: number
     }
+    isLiked: boolean
   }
   
+  export interface PostPagination {
+    currentPage: number;
+    postsPerPage: number;
+    totalPages: number;
+    totalPosts: number;
+  }
   

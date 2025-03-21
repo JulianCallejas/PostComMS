@@ -1,13 +1,19 @@
-import { Post } from "@/interfaces/post.interface"
+import { Post, PostPagination } from "@/interfaces/post.interface"
 import { ApiClient } from "./axios"
 
+
+export interface ReceivedPosts {
+  posts: Post[]
+  pagination: PostPagination
+}
+
 export class PostService {
-  static async getPosts(): Promise<Post[]> {
-    return ApiClient.get<Post[]>("/posts")
+  static async getPosts(): Promise<ReceivedPosts> {
+    return ApiClient.get<ReceivedPosts>("/posts")
   }
 
-  static async getMyPosts(): Promise<Post[]> {
-    return ApiClient.get<Post[]>("/posts/my-posts")
+  static async getMyPosts(): Promise<ReceivedPosts> {
+    return ApiClient.get<ReceivedPosts>("/posts/my-posts")
   }
 
   static async createPost(content: string): Promise<Post> {

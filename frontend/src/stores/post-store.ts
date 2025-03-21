@@ -2,12 +2,14 @@
 
 import { create } from "zustand"
 import { PostService } from "../services/post-service"
-import { Post } from "@/interfaces/post.interface"
+import { Post, PostPagination } from "@/interfaces/post.interface"
 
 
 interface PostState {
   posts: Post[]
+  postPagination: PostPagination
   myPosts: Post[]
+  myPostsPagination: PostPagination
   loading: boolean
   error: string | null
   getPosts: () => Promise<void>
@@ -19,14 +21,27 @@ interface PostState {
 
 export const usePostStore = create<PostState>((set) => ({
   posts: [],
+  postPagination:{
+    currentPage: 0,
+    postsPerPage: 0,
+    totalPages: 0,
+    totalPosts: 0,
+  },
   myPosts: [],
+  myPostsPagination:{
+    currentPage: 0,
+    postsPerPage: 0,
+    totalPages: 0,
+    totalPosts: 0,
+  },
   loading: false,
   error: null,
   getPosts: async () => {
     set({ loading: true, error: null })
     try {
       const posts = await PostService.getPosts()
-      set({ posts, loading: false })
+      console.log({posts});
+      set({ posts: posts.posts, postPagination: posts.pagination, loading: false })
     } catch (error) {
       if (error) 
         set({ error: "Failed to fetch posts", loading: false })
@@ -36,7 +51,7 @@ export const usePostStore = create<PostState>((set) => ({
     set({ loading: true, error: null })
     try {
       const myPosts = await PostService.getMyPosts()
-      set({ myPosts, loading: false })
+      set({ myPosts: myPosts.posts, myPostsPagination: myPosts.pagination, loading: false })
     } catch (error) {
         if (error) 
         set({ error: "Failed to fetch my posts", loading: false })
@@ -75,10 +90,10 @@ export const usePostStore = create<PostState>((set) => ({
       await PostService.likePost(id)
       set((state) => ({
         posts: state.posts.map((post) =>
-          post.id === id ? { ...post, _count: { likes: post._count.likes + 1 } } : post,
+          post.id === id ? { ...post, isLiked: !post.isLiked, _count: { likes: post._count.likes + (post.isLiked ? -1 : 1) } } : post,
         ),
         myPosts: state.myPosts.map((post) =>
-          post.id === id ? { ...post, _count: { likes: post._count.likes + 1 } } : post,
+          post.id === id ? { ...post, isLiked: !post.isLiked, _count: { likes: post._count.likes + (post.isLiked ? -1 : 1) } } : post,
         ),
       }))
     } catch (error) {
