@@ -6,7 +6,7 @@ export default function ProfilePage() {
       <div className="max-w-2xl mx-auto">
         <ProfileForm/>
         <h2 className="my-8 text-2xl" >Mis publicaciones</h2>
-        <PostsList myPostsOnly />
+        <PostsList myPostsOnly={true} />
         
       </div>
     )

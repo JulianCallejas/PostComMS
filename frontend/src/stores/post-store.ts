@@ -40,7 +40,6 @@ export const usePostStore = create<PostState>((set) => ({
     set({ loading: true, error: null })
     try {
       const posts = await PostService.getPosts()
-      console.log({posts});
       set({ posts: posts.posts, postPagination: posts.pagination, loading: false })
     } catch (error) {
       if (error) 

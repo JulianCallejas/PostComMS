@@ -29,7 +29,7 @@ export default function PostsList({myPostsOnly}: PostsListProps) {
           <div className="flex justify-center py-8">
             <Loader2 className="h-8 w-8 animate-spin" />
           </div>
-        ) : posts.length === 0 ? (
+        ) : (!myPostsOnly &&posts.length === 0) || (myPostsOnly && myPosts.length === 0) ? (
           <p className="text-center py-8 text-muted-foreground">No hay publicaciones disponibles</p>
         ) : (
             myPostsOnly 
