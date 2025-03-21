@@ -21,14 +21,14 @@ interface PostState {
 
 export const usePostStore = create<PostState>((set) => ({
   posts: [],
-  postPagination:{
+  postPagination: {
     currentPage: 0,
     postsPerPage: 0,
     totalPages: 0,
     totalPosts: 0,
   },
   myPosts: [],
-  myPostsPagination:{
+  myPostsPagination: {
     currentPage: 0,
     postsPerPage: 0,
     totalPages: 0,
@@ -42,7 +42,7 @@ export const usePostStore = create<PostState>((set) => ({
       const posts = await PostService.getPosts()
       set({ posts: posts.posts, postPagination: posts.pagination, loading: false })
     } catch (error) {
-      if (error) 
+      if (error)
         set({ error: "Failed to fetch posts", loading: false })
     }
   },
@@ -52,7 +52,7 @@ export const usePostStore = create<PostState>((set) => ({
       const myPosts = await PostService.getMyPosts()
       set({ myPosts: myPosts.posts, myPostsPagination: myPosts.pagination, loading: false })
     } catch (error) {
-        if (error) 
+      if (error)
         set({ error: "Failed to fetch my posts", loading: false })
     }
   },
@@ -66,7 +66,7 @@ export const usePostStore = create<PostState>((set) => ({
         loading: false,
       }))
     } catch (error) {
-        if (error) 
+      if (error)
         set({ error: "Failed to create post", loading: false })
     }
   },
@@ -80,7 +80,7 @@ export const usePostStore = create<PostState>((set) => ({
         loading: false,
       }))
     } catch (error) {
-        if (error) 
+      if (error)
         set({ error: "Failed to update post", loading: false })
     }
   },
@@ -96,7 +96,7 @@ export const usePostStore = create<PostState>((set) => ({
         ),
       }))
     } catch (error) {
-        if (error) 
+      if (error)
         set({ error: "Failed to like post" })
     }
   },

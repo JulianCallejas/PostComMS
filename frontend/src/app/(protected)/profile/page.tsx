@@ -9,7 +9,6 @@ export default function ProfilePage() {
         <h2 className="my-8 text-2xl" >Mis publicaciones</h2>
         <CreatePostForm />
         <PostsList myPostsOnly={true} />
-        
       </div>
     )
   }

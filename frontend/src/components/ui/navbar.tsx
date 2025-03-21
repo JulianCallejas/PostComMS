@@ -16,7 +16,7 @@ export default function Navbar() {
     }
 
     return (
-        <nav className="border-b bg-card rounded-b-lg mb-6">
+        <nav className="border-b bg-card rounded-b-lg mb-6 z-50 sticky top-2 animate-fade">
             <div className="container mx-auto px-4 flex items-center justify-between">
                 <Link href="/posts" className="text-xl font-bold">
                     <Image src="/img/logo100.webp" alt="Logo" width={85} height={85} />

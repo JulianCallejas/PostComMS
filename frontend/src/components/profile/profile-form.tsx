@@ -14,7 +14,6 @@ import { Loader2 } from "lucide-react"
 import { useUserStore } from "@/stores/user-store"
 import { toast } from "sonner"
 
-
 export default function ProfileForm() {
 
     const [isUpdating, setIsUpdating] = useState(false)
@@ -38,7 +37,6 @@ export default function ProfileForm() {
         getProfile()
     }, [getProfile])
 
-
     useEffect(() => {
         if (profile) {
             reset({
@@ -47,7 +45,6 @@ export default function ProfileForm() {
             })
         }
     }, [profile, reset])
-
 
     const onSubmit = async (data: ProfileFormValues) => {
 
@@ -60,7 +57,6 @@ export default function ProfileForm() {
         } finally {
             setIsUpdating(false)
         }
-
     }
 
     if (loading && !profile) {
