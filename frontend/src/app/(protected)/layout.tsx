@@ -1,26 +1,29 @@
-'use client'
+"use server"
 
-import { useAuthStore } from "@/stores/auth-store"
-import { useRouter } from "next/navigation"
+import React from "react"
+import Navbar from "@/components/ui/navbar";
+import { protectRoute } from "@/actions/protected-route-guard";
+import { redirect } from "next/navigation";
 
-export default function ProtectedLayout({
-  children,
+
+export default async function ProtectedLayout({
+    children,
 }: {
-  children: React.ReactNode
+    children: React.ReactNode
 }) {
-  
-    const { isAuthenticated } = useAuthStore() 
-    const router = useRouter()
 
-  if (!isAuthenticated) {
-    router.replace("/login")
-  }
-  
+    const isAuthorized = await protectRoute();
+    if (!isAuthorized) {
+        redirect('/login')
+    }
 
-  return (
-    <>
-      <main className="container mx-auto py-6 px-4">{children}</main>
-    </>
-  )
+    return (
+        <>
+            <main className="container mx-auto py-6 px-4">
+                <Navbar />
+                {children}
+            </main>
+        </>
+    )
 }
 

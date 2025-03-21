@@ -1,15 +1,16 @@
-import { useAuthStore } from "@/stores/auth-store";
+import { protectRoute } from "@/actions/protected-route-guard";
 import { redirect } from "next/navigation";
 
 
-export default function Home() {
+export default async function Home() {
   
-  const { isAuthenticated } = useAuthStore();
-  if (!isAuthenticated) {
+  const isAuthorized = await protectRoute();
+
+  if (!isAuthorized) {
     redirect('/login')
   }else{
     redirect('/posts')
   }
-  
+
 }
 

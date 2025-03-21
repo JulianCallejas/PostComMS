@@ -6,6 +6,7 @@ import { AuthService } from "@/services/auth-service"
 import { setAxiosToken } from "@/services/axios"
 import axios from "axios"
 import { User } from "@/interfaces/user.interface"
+import { validToken } from "@/actions/protected-route-guard"
 
 interface AuthState {
     token: string | null
@@ -33,9 +34,10 @@ export const useAuthStore = create<AuthState>()(
                             username: response.username,
                             email: response.email,
                         },
-                        isAuthenticated: true,
+                        isAuthenticated: await validToken(response.token),
                     })
                     setAxiosToken(response.token)
+                    document.cookie = `token=${response.token}; max-age=99999999; path=/; samesite=lax`
                 } catch (error) {
                     if (axios.isAxiosError(error)) {
                         throw new Error(error.response?.data?.message || "Error al iniciar sesión")
@@ -55,6 +57,7 @@ export const useAuthStore = create<AuthState>()(
                         isAuthenticated: true,
                     })
                     setAxiosToken(response.token)
+                    document.cookie = `token=${response.token}; max-age=99999999; path=/; samesite=lax`
                 } catch (error) {
                     if (axios.isAxiosError(error)) {
                         throw new Error(error.response?.data?.message || "Error al registrarse")
@@ -69,6 +72,7 @@ export const useAuthStore = create<AuthState>()(
                     isAuthenticated: false,
                 })
                 setAxiosToken(null)
+                document.cookie = `token=""; max-age=99999999; path=/; samesite=lax`
             },
             refreshToken: async () => {
                 try {
@@ -78,6 +82,7 @@ export const useAuthStore = create<AuthState>()(
                         isAuthenticated: true,
                     }))
                     setAxiosToken(response.token)
+                    document.cookie = `token=${response.token}; max-age=99999999; path=/; samesite=lax`
                 } catch (error) {
                     set({
                         token: null,
@@ -85,6 +90,7 @@ export const useAuthStore = create<AuthState>()(
                         isAuthenticated: false,
                     })
                     setAxiosToken(null)
+                    document.cookie = `token=""; max-age=99999999; path=/; samesite=lax`
                     throw error
                 }
             },
@@ -102,8 +108,10 @@ if (typeof window !== "undefined") {
     if (storedAuth) {
         try {
             const { state } = JSON.parse(storedAuth)
+            
             if (state.token) {
                 setAxiosToken(state.token)
+                document.cookie = `token=${state.token}; max-age=99999999; path=/; samesite=lax`
             }
         } catch (error) {
             console.error("Error parsing auth storage:", error)
