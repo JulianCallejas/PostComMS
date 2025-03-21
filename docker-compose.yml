@@ -1,0 +1,102 @@
+version: '3.8'
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
+    internal: true
+
+services:
+  db:
+    image: postgres:13
+    
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postcommsdb
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  auth-service:
+    build:
+      context: .
+      dockerfile: docker/auth.Dockerfile
+    environment:
+      - PORT=3001
+      - AUTHPORT=3001
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/postcommsdb
+      - JWT_SECRET=T@jIvMH}W54B@q3
+    networks:
+      - backend
+    depends_on:
+      - db
+
+  user-service:
+    build:
+      context: .
+      dockerfile: docker/user.Dockerfile
+    environment:
+      - PORT=3002
+      - USERPORT=3002
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/postcommsdb
+      - JWT_SECRET=T@jIvMH}W54B@q3
+    networks:
+      - backend
+    depends_on:
+      - db
+
+  post-service:
+    build:
+      context: .
+      dockerfile: docker/post.Dockerfile
+    environment:
+      - PORT=3003
+      - POSTPORT=3003
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/postcommsdb
+      - JWT_SECRET=T@jIvMH}W54B@q3
+    networks:
+      - backend
+    depends_on:
+      - db
+
+  gateway:
+    build:
+      context: .
+      dockerfile: docker/gateway.Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - AUTH_SERVICE_URL=http://auth-service:3001
+      - USER_SERVICE_URL=http://user-service:3002
+      - POST_SERVICE_URL=http://post-service:3003
+    networks:
+      - frontend
+      - backend
+    depends_on:
+      - auth-service
+      - user-service
+      - post-service
+
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/frontend.Dockerfile
+    container_name: postcomms-frontend
+    restart: always
+    ports:
+      - "3005:3005"
+    environment:
+      - NODE_ENV=production
+      - PORT=3005
+      - API_URL=http://localhost:3000/api
+      - JWT_SECRET=T@jIvMH}W54B@q3
+    networks:
+      - frontend
+  
+
+volumes:
+  postgres_data:

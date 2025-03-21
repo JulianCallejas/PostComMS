@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 const prisma = new PrismaClient();
 
 async function main() {
-  // Create test users
+
   const password = await bcrypt.hash('password123', 10);
   
   const users = await Promise.all([
@@ -32,7 +32,6 @@ async function main() {
     })
   ]);
 
-  // Create some posts
   await Promise.all([
     prisma.post.create({
       data: {
@@ -43,6 +42,31 @@ async function main() {
     prisma.post.create({
       data: {
         content: 'Excited to join this platform! and start the Resistance',
+        authorId: users[0].id
+      }
+    }),
+    prisma.post.create({
+      data: {
+        content: 'The Resistance will never stop! Skynet will fall!',
+        authorId: users[0].id
+      }
+    }),
+
+    prisma.post.create({
+      data: {
+        content: 'The future is not set, we must fight to change it!',
+        authorId: users[1].id
+      }
+    }),
+    prisma.post.create({
+      data: {
+        content: 'The battle against Skynet starts now!',
+        authorId: users[1].id
+      }
+    }),
+    prisma.post.create({
+      data: {
+        content: 'We must prepare for what is to come. We will win!',
         authorId: users[1].id
       }
     })
@@ -54,7 +78,6 @@ async function main() {
 main()
   .catch((e) => {
     console.error(e);
-    //process.exit(1);
   })
   .finally(async () => {
     await prisma.$disconnect();
