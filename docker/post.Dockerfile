@@ -15,6 +15,7 @@ RUN npx prisma generate
 # Copy only necessary source files
 COPY backend/src/services/posts ./src/services/posts
 COPY backend/src/config ./src/config
+COPY backend/src/swagger/posts ./src/swagger/posts
 COPY backend/src/middleware ./src/middleware
 COPY backend/src/lib ./src/lib
 
@@ -34,6 +35,7 @@ RUN npx prisma generate
 
 # Copy built files from builder stage
 COPY --from=builder /app/dist ./dist
+COPY backend/src/swagger/posts/swagger-posts-doc.sw ./src/swagger/posts/swagger-posts-doc.sw
 
 ENV PORT=3003
 EXPOSE 3003

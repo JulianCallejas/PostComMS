@@ -4,7 +4,7 @@ import { createLogger } from '../../lib/createLogger';
 import { config } from '../../config';
 import authRoutes from './index';
 import swaggerUi from 'swagger-ui-express';
-import { swaggerDocs } from '../../config/swagger/auth/swagger-auth.config';
+import { swaggerDocs } from '../../swagger/auth/swagger-auth.config';
 
 //Logger
 const logger = createLogger('authservice');

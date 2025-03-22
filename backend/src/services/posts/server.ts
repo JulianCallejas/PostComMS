@@ -5,7 +5,7 @@ import { authenticateToken } from '../../middleware/auth';
 import { createLogger } from '../../lib/createLogger';
 import postRoutes from './index';
 import swaggerUi from 'swagger-ui-express';
-import { swaggerDocs } from '../../config/swagger/posts/swagger.config';
+import { swaggerDocs } from '../../swagger/posts/swagger.config';
 
 //Logger
 const logger = createLogger('postsservice');

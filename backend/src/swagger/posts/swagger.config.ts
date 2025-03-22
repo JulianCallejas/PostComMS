@@ -1,5 +1,5 @@
 import swaggerJSDoc from "swagger-jsdoc";
-import { config } from '../../index';
+import { config } from "../../config";
 
 // Swagger definition
 const swaggerOptions = {
@@ -8,11 +8,11 @@ const swaggerOptions = {
     info: {
       title: 'Documentación para la API REST PostComMS',
       version: '1.0.0',
-      description: 'PostComMS Documentación para el microservicio de usuarios',
+      description: 'PostComMS Documentación para el microservicio de posts',
     },
     servers: [
       {
-        url: `http://localhost:${config.userPort}`,
+        url: `http://localhost:${config.postPort}`,
         description: 'Local server',
       },
     ],
@@ -26,7 +26,7 @@ const swaggerOptions = {
       },
     },
   },
-  apis: ['./src/config/swagger/users/swagger-users-doc.ts'],
+  apis: ['./src/config/swagger/posts/swagger-posts-doc.sw'],
 };
 
 export const swaggerDocs = swaggerJSDoc(swaggerOptions);

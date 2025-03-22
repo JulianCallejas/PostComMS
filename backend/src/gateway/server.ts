@@ -4,7 +4,9 @@ import { config } from '../config';
 import { createLogger } from '../lib/createLogger';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import swaggerUi from 'swagger-ui-express';
-import { swaggerDocs } from '../config/swagger/getway/swagger.config';
+import { swaggerDocs } from '../swagger/gateway/swagger.config';
+
+
 
 //Logger
 const logger = createLogger('gateway');

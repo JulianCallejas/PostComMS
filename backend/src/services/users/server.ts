@@ -5,7 +5,7 @@ import { createLogger } from '../../lib/createLogger';
 import { authenticateToken } from '../../middleware/auth';
 import userRoutes from './index';
 import swaggerUi from 'swagger-ui-express';
-import { swaggerDocs } from '../../config/swagger/users/swagger.config';
+import { swaggerDocs } from '../../swagger/users/swagger.config';
 
 //Logger
 const logger = createLogger('userservice');

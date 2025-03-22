@@ -12,6 +12,7 @@ RUN npm ci
 # Copy source files
 COPY backend/src/gateway ./src/gateway
 COPY backend/src/config ./src/config
+COPY backend/src/swagger ./src/swagger
 COPY backend/src/middleware ./src/middleware
 COPY backend/src/lib ./src/lib
 
@@ -29,6 +30,9 @@ RUN npm ci --only=production
 
 # Copy built files from builder stage
 COPY --from=builder /app/dist ./dist
+COPY backend/src/swagger/auth/swagger-auth-doc.sw ./src/swagger/auth/swagger-auth-doc.sw
+COPY backend/src/swagger/users/swagger-users-doc.sw ./src/swagger/users/swagger-users-doc.sw
+COPY backend/src/swagger/posts/swagger-posts-doc.sw ./src/swagger/posts/swagger-posts-doc.sw
 
 ENV PORT=3000
 EXPOSE 3000

@@ -105,7 +105,7 @@ Los contenedores del backend (Base de datos y micro servicios) estan configurado
 
 ## Estructura del Proyecto
 
-```plaintext
+```
 backend/
 ├── prisma/                 # Configuración de la base de datos
 │   ├── migrations/         # Migraciones de la base de datos
@@ -117,6 +117,11 @@ backend/
 │   │   ├── auth/           # Servicios de autenticación
 │   │   ├── users/          # Servicios de usuarios
 │   │   └── posts/          # Servicios de publicaciones
+│   ├── swagger/            # Swagger Documentación
+│   │   ├── auth/           # Swagger para el microservicio de autenticación
+│   │   ├── gateway/        # Swagger para el API Gateway, todos los microservicios 
+│   │   ├── users/          # Swagger para el microservicio de usuarios
+│   │   └── posts/          # Swagger para el microservicio de publicaciones
 │   └── index.ts            # Archivo principal del backend
 └──────
 docker/                     # Scripts de Docker para construir y ejecutar la aplicación

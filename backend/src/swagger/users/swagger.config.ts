@@ -1,18 +1,18 @@
 import swaggerJSDoc from "swagger-jsdoc";
-import { config } from '../../index';
+import { config } from "../../config";
 
 // Swagger definition
 const swaggerOptions = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'PostComMS Documentación para la API REST',
+      title: 'Documentación para la API REST PostComMS',
       version: '1.0.0',
-      description: 'Documentación para la API REST PostComMS',
+      description: 'PostComMS Documentación para el microservicio de usuarios',
     },
     servers: [
       {
-        url: `http://localhost:${config.port}`,
+        url: `http://localhost:${config.userPort}`,
         description: 'Local server',
       },
     ],
@@ -26,7 +26,7 @@ const swaggerOptions = {
       },
     },
   },
-  apis: ['./src/config/swagger/auth/swagger-auth-doc.ts', './src/config/swagger/users/swagger-users-doc.ts', './src/config/swagger/posts/swagger-posts-doc.ts'],
+  apis: ['./src/config/swagger/users/swagger-users-doc.sw'],
 };
 
 export const swaggerDocs = swaggerJSDoc(swaggerOptions);

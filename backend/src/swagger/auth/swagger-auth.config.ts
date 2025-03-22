@@ -1,5 +1,5 @@
 import swaggerJSDoc from "swagger-jsdoc";
-import { config } from '../../index';
+import { config } from "../../config";
 
 // Swagger definition
 const swaggerOptions = {
@@ -26,7 +26,7 @@ const swaggerOptions = {
         },
       },
     },
-    apis: ['./src/config/swagger/auth/swagger-auth-doc.ts'],
+    apis: ['./src/config/swagger/auth/swagger-auth-doc.sw'],
   };
   
   export const swaggerDocs = swaggerJSDoc(swaggerOptions);
