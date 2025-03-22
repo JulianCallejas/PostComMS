@@ -105,7 +105,7 @@ Los contenedores del backend (Base de datos y micro servicios) estan configurado
 
 ## Estructura del Proyecto
 
-```
+```Plaintext
 backend/
 ├── prisma/                 # Configuración de la base de datos
 │   ├── migrations/         # Migraciones de la base de datos
