@@ -179,28 +179,65 @@ front/
 
 ## API Backend
 
-La aplicación se comunica con una API backend que proporciona los siguientes endpoints:
+La aplicación se comunica con una API REST documentada con Swagger.
 
-### Autenticación
+## Documentación del Backend con Swagger
 
-- `POST /api/auth/register`: Registro de usuarios
-- `POST /api/auth/login`: Inicio de sesión
-- `POST /api/auth/refresh`: Actualización del token
+### Gateway (API Gateway)
 
+El **API Gateway** es el punto central para acceder a todos los microservicios. En él se gestionan las peticiones de los usuarios y se enrutan a los microservicios correspondientes. Los endpoints de este servicio se documentan a continuación.
 
-### Usuarios
+#### Endpoints del Gateway:
 
-- `GET /api/users/profile`: Obtener perfil del usuario
-- `PUT /api/users/profile`: Actualizar perfil del usuario
+##### Endpoints de Autenticación:
+- `POST /api/auth/register`: Registra un nuevo usuario.
+- `POST /api/auth/login`: Inicia sesión con un usuario.
+- `POST /api/auth/refresh`: Actualiza el token de acceso.
 
+##### Endpoints de Usuarios:
+- `GET /api/users/profile`: Obtiene el perfil del usuario.
+- `PUT /api/users/profile`: Actualiza el perfil del usuario.
 
-### Publicaciones
+##### Endpoints de Publicaciones:
+- `GET /api/posts`: Obtiene todas las publicaciones.
+- `GET /api/posts/my-posts`: Obtiene las publicaciones propias del usuario.
+- `POST /api/posts`: Crea una nueva publicación.
+- `PUT /api/posts/:id`: Actualiza una publicación.
+- `POST /api/posts/:id/like`: Da "like" a una publicación.
 
-- `GET /api/posts`: Obtener todas las publicaciones
-- `GET /api/posts/my-posts`: Obtener publicaciones del usuario
-- `POST /api/posts`: Crear una publicación
-- `PUT /api/posts/:id`: Actualizar una publicación
-- `POST /api/posts/:id/like`: Dar "like" a una publicación
+#### Para acceder a la documentación Swagger del Gateway:
+
+1. Asegúrate de que el servidor de **API Gateway** esté corriendo.
+2. Abre tu navegador y ve a [http://localhost:3000/api-docs](http://localhost:3000/api-docs) para ver la documentación de Swagger que incluye todos los endpoints del Gateway.
+
+## Microservicios
+
+Cada microservicio tiene su propia documentación Swagger, la cual incluye los endpoints disponibles para interactuar con ellos.
+
+#### Microservicio de Autenticación:
+
+- `POST /api/auth/register`: Registra un nuevo usuario.
+- `POST /api/auth/login`: Inicia sesión de usuario.
+- `POST /api/auth/refresh`: Refresca el token.
+
+Para acceder a la documentación Swagger del Microservicio de Autenticación, visita [http://localhost:3001/api-docs](http://localhost:3001/api-docs).
+
+#### Microservicio de Usuarios:
+
+- `GET /api/users/profile`: Obtiene el perfil del usuario.
+- `PUT /api/users/profile`: Actualiza el perfil del usuario.
+
+Para acceder a la documentación Swagger del Microservicio de Usuarios, visita [http://localhost:3002/api-docs](http://localhost:3002/api-docs).
+
+#### Microservicio de Publicaciones:
+
+- `GET /api/posts`: Obtiene todas las publicaciones.
+- `GET /api/posts/my-posts`: Obtiene las publicaciones propias del usuario.
+- `POST /api/posts`: Crea una nueva publicación.
+- `PUT /api/posts/:id`: Actualiza una publicación.
+- `POST /api/posts/:id/like`: Da "like" a una publicación.
+
+Para acceder a la documentación Swagger del Microservicio de Publicaciones, visita [http://localhost:3003/api-docs](http://localhost:3003/api-docs).
 
 
 ## Seguridad

@@ -3,6 +3,8 @@ import cors from 'cors';
 import { createLogger } from '../../lib/createLogger';
 import { config } from '../../config';
 import authRoutes from './index';
+import swaggerUi from 'swagger-ui-express';
+import { swaggerDocs } from '../../config/swagger/auth/swagger-auth.config';
 
 //Logger
 const logger = createLogger('authservice');
@@ -14,6 +16,8 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use(express.json());
 

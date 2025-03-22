@@ -3,11 +3,14 @@ import cors from 'cors';
 import { config } from '../config';
 import { createLogger } from '../lib/createLogger';
 import { createProxyMiddleware } from 'http-proxy-middleware';
+import swaggerUi from 'swagger-ui-express';
+import { swaggerDocs } from '../config/swagger/getway/swagger.config';
 
 //Logger
 const logger = createLogger('gateway');
 
 const app = express();
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use(cors());
 app.use(express.json());
 
